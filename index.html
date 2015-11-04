@@ -4,48 +4,73 @@
 	<title>Proxy</title>
 </head>
 <body>
-<h1>Proxy</h1>
+<center><table width="1220" border="0" cellspacing="0" cellpadding="1" > 
+<tr bgcolor="#990033" align="center"> 
+<td><b><h2><font color="#FFFFFF">Proxy</font></h2></b></td> 
+</tr> 
+<tr bgcolor="#990033"> 
+<td> 
+<table width="100%" border="0" cellspacing="0" cellpadding="5"> 
+<tr bgcolor="#FFFFFF"> 
+<td>Un proxy, fuerza a que un metodo de un objeto RealSubject sea indirectamente ejecutado a traves de un objeto Proxy, el cual actua como delegado o sustituto del objeto RealSubject. Los objetos Proxy son usualmente declarados sin que el Cliente sepa de que se trata de un Objeto Proxy.</td> 
+</tr> 
+</table> 
+</td> 
+</tr> 
+</table> 
 <br>
-Un proxy, fuerza a que un método de un objeto RealSubject sea indirectamente ejecutado a través de un objeto Proxy, el cual actúa como delegado o sustituto del objeto RealSubject. Los objetos Proxy son usualmente declarados sin que el Cliente sepa de que se trata de un Objeto Proxy.
-***
+<span>
+<font color="blue"><label alight=>
+Este patron consiste en interponer un intermediario Proxy entre un objeto y los demas que lo utilizan. Se diferencia del patron Adaptador en que el objeto "adaptado" solamente puede ser manipulado a traves del objeto Proxy.
+<br>
+El patron Proxy esta clasificado dentro de los Patrones Estructurales, es tambien conocido como: Embajador, Apoderado (surrogante).
+<br>
+Se suele utilizar para implementar comportamientos "vagos" (lazy). Por ejemplo, si tenemos muchos objetos imagen en un documento, se tardaria mucho tiempo en abrir el documento al cargar las imagenes de disco. Para evitarlo podemos sustituir los objetos imagen por objetos proxyImagen, con el mismo interfaz, pero que solamente cargan la imagen cuando se va a visualizar. 
+<br>
+Este patron es ampliamente utilizado en frameworks como Hibernate o Spring AOP, permitiendo capturar las llamadas a objetos POJO y permitiendo insertar en ellas capacidades de persistencia para el caso de Hibernate, u otro tipo de aspectos como gestion de seguridad o transacciones para Spring AOP. 
+<br><br>
+<h3>Diagrama de clases del patron Proxy:</h3> 
+<hr>  
+<img src="https://camo.githubusercontent.com/8e0430f6ae92d98d1158915e03a17acdf3b88979/687474703a2f2f332e62702e626c6f6773706f742e636f6d2f5f57514d786e744e4d5754302f544e674761503051646f492f41414141414141414c43512f44616f366f4f72476451552f73313630302f50726f78792e6a7067">
+<br>
+En este patron se identifica una interfaz Subject, un objeto RealSubject que es el objeto al que se accede a traves del Proxy. El objeto Proxy mantiene una referencia al objeto RealSubject y controla el acceso a sus metodos, intruciendo las capacidades adicionales que fuesen necesarias. Tanto la clase RealSubject como la clase Proxy implementan la interfaz Subject.
+<br>
+Debemos insistir en dos aspectos que caracterizan el patron Proxy:
+<br>
+El objeto Apoderado tiene el mismo interfaz que el objeto "Protegido". Para facilitar esto se puede derivar el objeto Apoderado de la misma clase padre que el objeto "Protegido", pero no es absolutamente necesario.
+El objeto "Protegido" solamente puede ser manipulado por su correspondiente Apoderado.
+<br>
+<br>
+<h3> Usos del patron Proxy</h3>
+<br>
+Control de Acceso: El patron puede ser usado para controlar el acceso a los métodos del RealSubject. La logica del control de acceso se delegara en el proxy, de esta forma quedara mas limpio el RealSubject (en terminos de codigo).
+Acceso a objetos remotos:** Representacion de un objeto remoto de forma local, es decir, el Proxy resuelve y enmascara la forma en cómo conectarse al objeto remoto. Ejemplos de implementacion de este patrón los pueden encontrar en EJB y RMI.
+Proxy Virtual: Crea objetos costosos bajo demanda. Por ejemplo, al iniciar una aplicación se pueden instanciar con este patron todos los iconos de dicha aplicación, pero solo cuando éste sea solicitado realmente ira a buscarlo al disco y presentado al usuario.<br>
+Proxy de Referencia Inteligente: Sustituto de una referencia que hace operaciones adicionales cuando se accede a un objeto, como por ejemplo, controlar concurrencia, contar numero de instancias, cargar un objeto en memoria, manejo de cache)
+<br>
+<br>
+Un ejemplo tipico de aplicacion del patron proxy es el de un editor de documentos. El editor podra incluir imagenes y dibujos complejos, y se plantea el problema de recuperar todos estos costosos objetos cada vez que se abre el documento. La aplicacion del patron proxy soluciona el problema definiendo un "representante", que ocupe su lugar, hasta que sea necesario cargarlos.<br>
+<br></label></span>
+<img src="http://ciberaula.com/imagenes/articulo/proxy_ejemplo.gif">
+<br>
+<h3>Implementacion Proxy</h3><br><hr>
+Para demostrar el uso de _Proxy_, lo implementamos en una aplicacion que nos sirve para recibir las imagenes indicadas. 
+<h3> Diagrama</h3><hr><br>
+<img src="https://camo.githubusercontent.com/cbb6d66aab9ca2a12b54bb210069cc3f21d4c6b0/68747470733a2f2f73636f6e74656e742d6c6178332d312e78782e666263646e2e6e65742f6870686f746f732d786166312f762f7433342e302d31322f31323137393330345f31303230383333393733353931333936365f313430353836303734385f6e2e6a70673f6f683d3437626631646338633063396239613831623035373930336136343963306663266f653d3536333338393231"><br>
 
-Este patrón consiste en interponer un intermediario (**Proxy**) entre un objeto y los demás que lo utilizan. Se diferencia del patrón **Adaptador** en que el objeto "_adaptado_" solamente puede ser manipulado a través del objeto Proxy.
+<img src="https://camo.githubusercontent.com/3a5b4863630b9f8b827e273fbb599d77cdffe6b5/68747470733a2f2f73636f6e74656e742d6c6178332d312e78782e666263646e2e6e65742f6870686f746f732d787074312f762f7433342e302d31322f31323137393936385f31303230383333393733353837333936355f313631313931303739375f6e2e6a70673f6f683d6537366561633434613132646663613861663031656464633233396361613765266f653d3536333345414438">
 
-El patrón Proxy esta clasificado dentro de los **Patrones Estructurales**, es también conocido como: _Embajador_, _Apoderado_ (surrogante).
-
-Se suele utilizar para implementar comportamientos "**vagos**" (lazy). Por ejemplo, si tenemos muchos objetos imagen en un documento, se tardaría mucho tiempo en abrir el documento al cargar las imágenes de disco. Para evitarlo podemos sustituir los objetos imagen por objetos proxyImagen, con el mismo interfaz, pero que solamente cargan la imagen cuando se va a visualizar. 
-
-Este patrón es ampliamente utilizado en frameworks cómo Hibernate o Spring AOP, permitiendo capturar las llamadas a objetos POJO y permitiendo insertar en ellas capacidades de persistencia para el caso de Hibernate, u otro tipo de aspectos como gestión de seguridad o transacciones para Spring AOP. 
-
-# Diagrama de clases del patrón Proxy:
-***
-
-![](http://3.bp.blogspot.com/_WQMxntNMWT0/TNgGaP0QdoI/AAAAAAAALCQ/Dao6oOrGdQU/s1600/Proxy.jpg)
-
-> En este patrón se identifica una interfaz **Subject**, un objeto **RealSubject** que es el objeto al que se accede a través del Proxy. El objeto Proxy mantiene una referencia al objeto RealSubject y controla el acceso a sus métodos, intruciendo las capacidades adicionales que fuesen necesarias. Tanto la clase RealSubject como la clase Proxy implementan la interfaz Subject.
-
-Debemos insistir en dos aspectos que caracterizan el patrón Proxy:
-
-* El objeto Apoderado tiene el mismo interfaz que el objeto "Protegido". Para facilitar esto se puede derivar el objeto Apoderado de la misma clase padre que el objeto "Protegido", pero no es absolutamente necesario.
-* El objeto "Protegido" solamente puede ser manipulado por su correspondiente Apoderado.
-
-***
-
-# Usos del patrón Proxy
-
-* **Control de Acceso:** El patrón puede ser usado para controlar el acceso a los métodos del RealSubject. La lógica del control de acceso se delegará en el proxy, de esta forma quedará mas limpio el RealSubject (en términos de código).
-* **Acceso a objetos remotos:** Representación de un objeto remoto de forma local, es decir, el Proxy resuelve y enmascara la forma en cómo conectarse al objeto remoto. Ejemplos de implementación de este patrón los pueden encontrar en EJB y RMI.
-* **Proxy Virtual**: Crea objetos costosos bajo demanda. Por ejemplo, al iniciar una aplicación se pueden instanciar con este patrón todos los iconos de dicha aplicación, pero sólo cuando éste sea solicitado realmente ira a buscarlo al disco y presentado al usuario.
-* **Proxy de Referencia Inteligente:** Sustituto de una referencia que hace operaciones adicionales cuando se accede a un objeto, como por ejemplo, controlar concurrencia, contar numero de instancias, cargar un objeto en memoria, manejo de cache)
-
-***
-Un ejemplo típico de aplicación del patrón proxy es el de un editor de documentos. El editor podrá incluir imágenes y dibujos complejos, y se plantea el problema de recuperar todos estos costosos objetos cada vez que se abre el documento. La aplicación del patrón proxy soluciona el problema definiendo un "representante", que ocupe su lugar, hasta que sea necesario cargarlos. 
-
-![](http://ciberaula.com/imagenes/articulo/proxy_ejemplo.gif)
-
-***
-> # Integrantes:
-> * Hernández Lira Christian Leonardo. 
-> * Vazquez Cruz Lizbeth
+<h3>Interfaz grafica</h3>
+<hr>
+<img src="https://camo.githubusercontent.com/d395f8a664ffd12669e07b3395a5107e029b1219/68747470733a2f2f666263646e2d70686f746f732d672d612e616b616d616968642e6e65742f6870686f746f732d616b2d786174312f762f7433342e302d302f70323036783230362f31323138383431385f31303230383333393734383837343239305f3233313937373136345f6e2e6a70673f6f683d6464386161313037303134336633326662373039343538393036633733346437266f653d3536333243334146265f5f6764615f5f3d313434363234303439335f3535366565313662383165323166643437653930393830363531653337306663">
+<br>
+<h3>Aplicacion</h3><hr>
+<img src="https://camo.githubusercontent.com/af2b7b5a16743d5d441988a886581ccb97c3f7d3/68747470733a2f2f73636f6e74656e742d6c6178332d312e78782e666263646e2e6e65742f6870686f746f732d786170312f762f7433342e302d31322f31323137393531345f31303230383333393734383735343238375f313230303234303030355f6e2e6a70673f6f683d3436313165333836316466376232306330313164303331383539333665636634266f653d3536333242453237"> 
+</font>
+<br>
+<br>
+<b>Integrantes:<br>
+Hernandez Lira Christian Leonardo. <br>
+Vazquez Cruz Lizbeth<br></b> </center> 
 </body>
 </html>
